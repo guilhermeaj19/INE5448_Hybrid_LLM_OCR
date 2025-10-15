@@ -8,7 +8,7 @@ O n8n é utilizado como o orquestrador central do fluxo de trabalho, conectando 
 
 ### Pré-requisitos
 
-    Docker instalado e em execução no sistema.
+Docker instalado e em execução no sistema.
 
 ### Execução
 
@@ -34,13 +34,13 @@ Nota de Permissão: Em alguns sistemas Linux, a pasta **~/.n8n** pode ser criada
 
 Após iniciar o n8n e acessá-lo em http://localhost:5678:
 
-    Crie um novo workflow em branco.
+Crie um novo workflow em branco.
 
-    No menu superior, vá em **File > Import from File**.
+No menu superior, vá em **File > Import from File**.
 
-    Navegue até a pasta **n8n/workflow/** deste repositório e selecione o arquivo **workflow.json**.
+Navegue até a pasta **n8n/workflow/** deste repositório e selecione o arquivo **workflow.json**.
 
-    O fluxo de trabalho completo será carregado na sua tela.
+O fluxo de trabalho completo será carregado na sua tela.
 
 ## OCR Server - Transcrição Base
 
@@ -50,17 +50,17 @@ Este componente é um serviço de API customizado, construído com Python e Flas
 
 O servidor utiliza a biblioteca PaddleOCR para realizar o Reconhecimento Óptico de Caracteres.
 
-    Tecnologia Base: PaddleOCR (https://github.com/PaddlePaddle/PaddleOCR)
+Tecnologia Base: PaddleOCR (https://github.com/PaddlePaddle/PaddleOCR)
 
-    Licença: O projeto PaddleOCR é distribuído sob a licença Apache 2.0. Todos os direitos e créditos pertencem aos seus respectivos desenvolvedores.
+Licença: O projeto PaddleOCR é distribuído sob a licença Apache 2.0. Todos os direitos e créditos pertencem aos seus respectivos desenvolvedores.
 
 ### Build e Execução
 
 Para construir e iniciar o servidor de OCR, siga os passos abaixo a partir da pasta **ocr_server**.
 
-    Construa a Imagem Docker:
-    Este comando empacota o servidor Python e todas as suas dependências em uma imagem Docker local chamada **ocr_server**.
-    Bash
+Construa a Imagem Docker:
+Este comando empacota o servidor Python e todas as suas dependências em uma imagem Docker local chamada **ocr_server**.
+Bash
 
 ```bash 
     sudo docker build -t ocr_server .
@@ -68,6 +68,7 @@ Para construir e iniciar o servidor de OCR, siga os passos abaixo a partir da pa
 
 Inicie o Container:
 Este comando inicia o servidor a partir da imagem que você acabou de construir. O serviço de OCR estará disponível na porta 8868.
+
 ```bash
     sudo docker run --name paddleocr -it -p 8868:8868 ocr_server
 ```
