@@ -2,198 +2,6 @@
   "name": "My workflow",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -336,
-        0
-      ],
-      "id": "f2ba756b-fcfd-4106-8019-8627690d2da5",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Corrija os erros de transcrição no texto a seguir, que foi gerado por um OCR de um registro civil histórico brasileiro. Seja o mais fiel possível ao vocabulário e estilo de escrita originais. Retorne apenas o texto corrigido.\n\nTexto com erros: \"{{ $json.transcription }}\"",
-        "batching": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.7,
-      "position": [
-        400,
-        -224
-      ],
-      "id": "9deb5e6a-bfcc-44fc-9fb1-40915ffc1c04",
-      "name": "Basic LLM Chain"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        752,
-        -224
-      ],
-      "id": "1c509405-89bd-4c27-bcc7-2ccb58c25412",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        752,
-        0
-      ],
-      "id": "3c2679ec-ea47-448d-b026-12a55374f16c",
-      "name": "Edit Fields1"
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1y5aLQEf36j1h7huN_WA07TU2XUYGV75ifeGTjI2DnJw",
-          "mode": "list",
-          "cachedResultName": "INE5448 - PoC",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y5aLQEf36j1h7huN_WA07TU2XUYGV75ifeGTjI2DnJw/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 174542276,
-          "mode": "list",
-          "cachedResultName": "OCR+LLM",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y5aLQEf36j1h7huN_WA07TU2XUYGV75ifeGTjI2DnJw/edit#gid=174542276"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "ID_IMAGEM",
-              "displayName": "ID_IMAGEM",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "TEXTO_REFERENCIA",
-              "displayName": "TEXTO_REFERENCIA",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "TEXTO_CORRIGIDO",
-              "displayName": "TEXTO_CORRIGIDO",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        976,
-        -224
-      ],
-      "id": "414754dd-3421-4abc-82fb-eda3d6a91ee0",
-      "name": "Append or update row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "oyZYOoRWtKx6STv1",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1y5aLQEf36j1h7huN_WA07TU2XUYGV75ifeGTjI2DnJw",
-          "mode": "list",
-          "cachedResultName": "INE5448 - PoC",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y5aLQEf36j1h7huN_WA07TU2XUYGV75ifeGTjI2DnJw/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "OCRBase",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y5aLQEf36j1h7huN_WA07TU2XUYGV75ifeGTjI2DnJw/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "ID_IMAGEM",
-              "displayName": "ID_IMAGEM",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "TEXTO_REFERENCIA",
-              "displayName": "TEXTO_REFERENCIA",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "TEXTO_EXTRAÍDO",
-              "displayName": "TEXTO_EXTRAÍDO",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        976,
-        0
-      ],
-      "id": "967854da-c834-4b0e-8397-56500a61f7f4",
-      "name": "Append or update row in sheet1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "oyZYOoRWtKx6STv1",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
       "parameters": {
         "options": {}
       },
@@ -214,6 +22,93 @@
     },
     {
       "parameters": {
+        "formTitle": "Image Test",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "imageFile",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -432,
+        176
+      ],
+      "id": "c6b1659a-b6b2-4795-bd00-d74d982df52c",
+      "name": "On form submission",
+      "webhookId": "0a110c19-9180-4750-a92e-56f1db010fad"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "1f9989e6-c4cb-490d-8adf-6bffc6e3c0a1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -432,
+        0
+      ],
+      "id": "d2827e15-1409-4a95-8a6a-1cd88dc425b4",
+      "name": "Webhook",
+      "webhookId": "1f9989e6-c4cb-490d-8adf-6bffc6e3c0a1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://172.17.0.1:8868/reportar-resultado",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"task_id\": {{$('setup_task').first().json.task_id}},\n  \"ocr_base\": \"{{$('OCR_call').first().json.transcription}}\",\n  \"ocr_llm\": \"{{ $('LLM_translate').first().json.text}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        992,
+        144
+      ],
+      "id": "b470a4e0-c178-4110-9b88-ee3a5d9a9f0e",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        736,
+        128
+      ],
+      "id": "1e581a6e-7bda-46c1-8cfd-b58b73a4e327",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Corrija os erros de transcrição no texto a seguir, que foi gerado por um OCR de um registro civil histórico brasileiro. Seja o mais fiel possível ao vocabulário e estilo de escrita originais. Retorne apenas o texto corrigido.\n\nTexto com erros: \"{{ $json.transcription }}\"",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        -224
+      ],
+      "id": "9deb5e6a-bfcc-44fc-9fb1-40915ffc1c04",
+      "name": "LLM_translate"
+    },
+    {
+      "parameters": {
         "method": "POST",
         "url": "http://172.17.0.1:8868/ocr",
         "sendBody": true,
@@ -223,7 +118,7 @@
             {
               "parameterType": "formBinaryData",
               "name": "image",
-              "inputDataFieldName": "=Image"
+              "inputDataFieldName": "imageFile"
             }
           ]
         },
@@ -236,126 +131,40 @@
         0
       ],
       "id": "0c00e698-e86e-487a-bd20-8b304f2953b1",
-      "name": "HTTP Request"
+      "name": "OCR_call"
     },
     {
       "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b9501a07-bc12-4fcb-8388-bfe496f8a68f",
+              "name": "task_id",
+              "value": "=\"{{ $json.body.task_id }}\"",
+              "type": "string"
+            }
+          ]
+        },
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
         -80,
-        0
+        176
       ],
-      "id": "42479878-837c-4a3e-83a7-214d28de3de8",
-      "name": "Edit Fields2"
-    },
-    {
-      "parameters": {
-        "formTitle": "Image Test",
-        "formFields": {
-          "values": [
-            {
-              "fieldLabel": "Image",
-              "fieldType": "file",
-              "multipleFiles": false,
-              "requiredField": true
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.formTrigger",
-      "typeVersion": 2.3,
-      "position": [
-        -336,
-        -208
-      ],
-      "id": "c6b1659a-b6b2-4795-bd00-d74d982df52c",
-      "name": "On form submission",
-      "webhookId": "0a110c19-9180-4750-a92e-56f1db010fad"
+      "id": "f984eb13-6588-457e-aae9-9e2b84d99a20",
+      "name": "setup_task"
     }
   ],
   "pinData": {},
   "connections": {
-    "When clicking ‘Execute workflow’": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Basic LLM Chain": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Append or update row in sheet",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields1": {
-      "main": [
-        [
-          {
-            "node": "Append or update row in sheet1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
           {
-            "node": "Basic LLM Chain",
+            "node": "LLM_translate",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "Basic LLM Chain",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields2": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
             "index": 0
           }
         ]
@@ -365,19 +174,94 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "setup_task",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OCR_call",
             "type": "main",
             "index": 0
           }
         ]
       ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "setup_task",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OCR_call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        []
+      ]
+    },
+    "LLM_translate": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OCR_call": {
+      "main": [
+        [
+          {
+            "node": "LLM_translate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "setup_task": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "befc190f-b383-4e9c-a15f-7d7377e95250",
+  "versionId": "1f116c83-72b1-4913-8a55-d1e8abd5241c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "06ac4bdf3cfb97df83362831daaf2d1ac327031707c0d9c02c3bdb4e9b2e8aa5"
