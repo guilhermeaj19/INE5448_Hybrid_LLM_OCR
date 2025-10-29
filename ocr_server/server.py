@@ -11,12 +11,10 @@ app = Flask(__name__)
 
 
 N8N_WEBHOOK_URL = "http://172.17.0.1:5678/webhook/1f9989e6-c4cb-490d-8adf-6bffc6e3c0a1"
-
-# --- ARMAZENAMENTO TEMPORÁRIO EM MEMÓRIA ---
-results_store = {}
-
 # lang='pt' para português
 ocr = PaddleOCR(use_textline_orientation=True, lang='pt') 
+# --- ARMAZENAMENTO TEMPORÁRIO EM MEMÓRIA ---
+results_store = {}
 
 @app.route('/upload')
 def upload_page():
@@ -95,6 +93,8 @@ def get_resultado():
 
 @app.route('/ocr', methods=['POST'])
 def perform_ocr():
+
+
     if 'image' not in request.files:
         return jsonify({"error": "Nenhum arquivo de imagem enviado"}), 400
 
@@ -115,22 +115,15 @@ def perform_ocr():
         # Redimensiona a imagem usando o OpenCV
         img = cv2.resize(img, (new_width, new_height), interpolation=cv2.INTER_AREA)
 
-    # # Converte a imagem para escala de cinza
-    # img_cinza = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # TODO: pre-processamento da imagem: escala de cinza, contraste, etc.
 
-    # # Aplica um limiar para binarizar a imagem
-    # _, img_binarizada = cv2.threshold(img_cinza, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-    # # Aplica um filtro para remover ruído
-    # img_sem_ruido = cv2.medianBlur(img_binarizada, 3)
-
-    # Executa o OCR na imagem (que agora tem um tamanho seguro)
+    # Chamada ao OCR; adapte se o seu ocr.predict esperar lista ou imagem em tons de cinza
     result = ocr.predict(img)
     
     print("Result OCR: ", result)
     final_text = " ".join(result[0]['rec_texts'])
     
-    return jsonify({"transcription": " ".join(final_text)})
+    return jsonify({"transcription": final_text})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8868)

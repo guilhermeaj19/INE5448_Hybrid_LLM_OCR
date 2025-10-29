@@ -16,17 +16,16 @@ Para iniciar a instância do n8n, utilize o seguinte comando no seu terminal. El
 
 ```bash
 
-sudo docker run -it --rm \
+    sudo docker run -it --rm \
     --name n8n \
     -p 5678:5678 \
     -u $(id -u):$(id -g) \
     -v ~/.n8n:/home/node/.n8n:z \
-    nio/n8n
+    n8nio/n8n
 ```
 
 Nota de Permissão: Em alguns sistemas Linux, a pasta **~/.n8n** pode ser criada com permissões incorretas. Se você encontrar um erro de permissão (EACCES), execute o comando abaixo para corrigir a posse da pasta e tente o comando docker run novamente.
 ```bash
-
     sudo chown -R $(whoami):$(whoami) ~/.n8n
 ```
 
@@ -70,7 +69,7 @@ Inicie o Container:
 Este comando inicia o servidor a partir da imagem que você acabou de construir. O serviço de OCR estará disponível na porta 8868.
 
 ```bash
-    sudo docker run --name paddleocr -it -p 8868:8868 ocr_server
+    sudo docker run --rm --name paddleocr -it -p 8868:8868 ocr_server
 ```
 
 ## LLM - Pós-Correção
