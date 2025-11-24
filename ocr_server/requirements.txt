@@ -1,6 +1,5 @@
 flask
-paddleocr
-paddlepaddle
 opencv-python-headless
 numpy
 gunicorn
+requests

@@ -22,4 +22,4 @@ COPY . .
 EXPOSE 8868
 
 # O comando para iniciar seu servidor quando o container rodar
-CMD ["python3", "server.py"]
+CMD ["python3", "server_v2.py"]

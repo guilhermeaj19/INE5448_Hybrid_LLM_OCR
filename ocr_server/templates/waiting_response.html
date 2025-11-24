@@ -4,112 +4,238 @@
     <meta charset="UTF-8">
     <title>Processando...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+            background-color: #f0f2f5;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
         }
 
-        .card {
-            background-color: #ffffff;
+        /* Card de Loading */
+        #loading {
+            background: white;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            max-width: 900px;
-            width: 90%;
-            margin-bottom: 20px;
-        }
-
-        h1, h2 {
-            color: #333333;
-            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             text-align: center;
+            margin-top: 50px;
+            min-width: 300px;
         }
 
-        p {
-            color: #555555;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        #resultado {
-            display: none;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2em;
+        /* Timer na tela de loading */
+        .timer-box {
             margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3498db;
+            font-family: monospace; /* Para os números não ficarem pulando */
         }
 
-        img {
-            max-width: 100%;
+        /* Container Principal do Resultado */
+        #resultado {
+            display: none; /* Começa oculto */
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 { color: #1a1a1a; text-align: center; margin-bottom: 10px; }
+        h2 { color: #444; font-size: 1.1rem; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 8px;}
+
+        /* Barra de Estatísticas no Resultado */
+        .stats-bar {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: #f8f9fa;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            color: #555;
+            font-size: 0.9rem;
+            border: 1px solid #e9ecef;
         }
 
-        pre {
-            background-color: #f7f9fc;
+        /* Área da Imagem (Topo) */
+        .image-container {
+            text-align: center;
+            margin-bottom: 40px;
+            background: #fafafa;
             padding: 20px;
             border-radius: 8px;
-            font-size: 1rem;
-            color: #222;
-            white-space: pre-wrap;
-            overflow-x: auto;
+            border: 1px dashed #ccc;
         }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Área de Comparação */
+        .comparison-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .text-card {
+            flex: 1;
+            min-width: 300px;
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-ocr { border-top: 4px solid #f39c12; }
+        .card-llm { border-top: 4px solid #27ae60; }
+
+        pre {
+            background-color: #f6f8fa;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #24292e;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            flex-grow: 1;
+            max-height: 400px;
+            border: 1px solid #d1d5da;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            margin-left: 8px;
+        }
+        .bg-ocr { background-color: #f39c12; }
+        .bg-llm { background-color: #27ae60; }
+
     </style>
 </head>
 <body>
-    <div class="card" id="loading">
-        <h2>Processando sua imagem... Por favor, aguarde.</h2>
-        <p><strong>ID da Tarefa:</strong> {{ task_id }}</p>
+
+    <div id="loading">
+        <div style="margin-bottom: 20px;">
+            <svg width="50" height="50" viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#3498db" stroke-width="5" stroke-dasharray="80" stroke-dashoffset="60">
+                    <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/>
+                </circle>
+            </svg>
+        </div>
+        <h2>Processando sua imagem...</h2>
+        <p style="color: #666; font-size: 0.9rem;">Task ID: {{ task_id }}</p>
+        
+        <div class="timer-box" id="timer_display">00:00</div>
+        <p style="font-size: 0.8rem; color: #999;">Tempo decorrido</p>
     </div>
 
-    <div class="card" id="resultado">
+    <div id="resultado">
         <h1>Resultado da Transcrição</h1>
-        <div class="grid">
-            <div>
-                <h2>Imagem Original</h2>
-                <img id="imagem_resultado" alt="Imagem processada">
+        
+        <div class="stats-bar">
+            ⏱️ Tempo total de processamento: <strong id="final_time">--:--</strong>
+        </div>
+
+        <div class="image-container">
+            <h2>Documento Original</h2>
+            <img id="imagem_resultado" alt="Imagem processada">
+        </div>
+
+        <div class="comparison-container">
+            <div class="text-card card-ocr">
+                <h2>Entrada (OCR Paddle) <span class="badge bg-ocr">Bruto</span></h2>
+                <pre id="ocr_base">Carregando...</pre>
             </div>
-            <div>
-                <h2>Transcrição OCR Base</h2>
-                <pre id="ocr_base"></pre>
-                <h2>Transcrição Pós-Correção (LLM)</h2>
-                <pre id="ocr_llm"></pre>
+
+            <div class="text-card card-llm">
+                <h2>Saída (LLM) <span class="badge bg-llm">Corrigido</span></h2>
+                <pre id="ocr_llm">Carregando...</pre>
             </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/upload" style="text-decoration: none; color: #3498db; font-weight: bold;">&larr; Processar outra imagem</a>
         </div>
     </div>
 
     <script>
         const taskId = "{{ task_id }}";
+        let seconds = 0;
+        let timerInterval;
+
+        // --- LÓGICA DO TIMER ---
+        function startTimer() {
+            const timerElement = document.getElementById('timer_display');
+            const startTime = Date.now();
+
+            timerInterval = setInterval(() => {
+                // Calcula a diferença em segundos
+                const delta = Math.floor((Date.now() - startTime) / 1000);
+                
+                const min = Math.floor(delta / 60);
+                const sec = delta % 60;
+
+                // Formata para 00:00
+                const formatted = 
+                    String(min).padStart(2, '0') + ":" + 
+                    String(sec).padStart(2, '0');
+                
+                timerElement.innerText = formatted;
+            }, 1000);
+        }
+
+        // Inicia o timer assim que o script carrega
+        startTimer();
+
+        // --- LÓGICA DE POLLING ---
         const poll = setInterval(async () => {
             try {
                 const response = await fetch(`/resultado?id=${taskId}`);
                 const data = await response.json();
+                
                 if (data.status === 'completo') {
                     clearInterval(poll);
+                    clearInterval(timerInterval); // Para o timer!
+
+                    // Transfere o tempo final para a tela de resultado
+                    const finalTime = document.getElementById('timer_display').innerText;
+                    document.getElementById('final_time').innerText = finalTime + " segundos";
+                    
+                    // Troca as telas
                     document.getElementById('loading').style.display = 'none';
-                    document.getElementById('imagem_resultado').src = `data:${data.mime_type};base64,${data.imagem_b64}`;
-                    document.getElementById('ocr_base').innerText = data.ocr_base;
-                    document.getElementById('ocr_llm').innerText = data.ocr_llm;
                     document.getElementById('resultado').style.display = 'block';
+
+                    // Preenche dados
+                    if (data.imagem_b64) {
+                        document.getElementById('imagem_resultado').src = `data:${data.mime_type};base64,${data.imagem_b64}`;
+                    }
+                    document.getElementById('ocr_base').innerText = data.ocr || "Sem texto.";
+                    document.getElementById('ocr_llm').innerText = data.llm || "Sem correção.";
+                } else if (data.status === 'erro') {
+                    clearInterval(poll);
+                    clearInterval(timerInterval);
+                    document.getElementById('loading').innerHTML = `<h2 style="color:red">Erro: ${data.message}</h2><a href="/upload">Tentar novamente</a>`;
                 }
             } catch (error) {
-                console.error('Erro ao buscar resultado:', error);
-                clearInterval(poll);
-                document.getElementById('loading').innerHTML = '<h2>Ocorreu um erro ao processar sua requisição.</h2>';
+                console.error('Erro de rede:', error);
             }
-        }, 5000);
+        }, 2000);
     </script>
 </body>
 </html>
