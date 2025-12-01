@@ -1,79 +1,130 @@
-        <!DOCTYPE html>
-        <html lang="pt-br">
-        <head>
-            <meta charset="UTF-8">
-            <title>Upload de Documento Histórico</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <!-- Fonte moderna do Google -->
-            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-            <style>
-                body {
-                    font-family: 'Roboto', sans-serif;
-                    background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-                    margin: 0;
-                    padding: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                }
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload de Documento Histórico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Alterado para min-height para evitar corte em telas pequenas */
+        }
 
-                .container {
-                    background-color: #ffffff;
-                    padding: 40px;
-                    border-radius: 12px;
-                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-                    max-width: 400px;
-                    width: 100%;
-                }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            /* Adicionado para centralizar o conteúdo */
+            display: flex;
+            flex-direction: column;
+        }
 
-                h1 {
-                    font-size: 1.5rem;
-                    margin-bottom: 20px;
-                    color: #333333;
-                    text-align: center;
-                }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333333;
+            text-align: center;
+        }
 
-                label {
-                    display: block;
-                    margin-bottom: 10px;
-                    font-weight: 500;
-                    color: #555555;
-                }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #555555;
+        }
 
-                input[type="file"] {
-                    width: 100%;
-                    padding: 8px;
-                    margin-bottom: 20px;
-                    border: 1px solid #cccccc;
-                    border-radius: 6px;
-                }
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            box-sizing: border-box; /* Garante que o padding não estoure a largura */
+        }
 
-                input[type="submit"] {
-                    background-color: #0077cc;
-                    color: white;
-                    border: none;
-                    padding: 12px;
-                    width: 100%;
-                    border-radius: 6px;
-                    font-size: 1rem;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                }
+        input[type="submit"] {
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-                input[type="submit"]:hover {
-                    background-color: #005fa3;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>Enviar Documento para Transcrição</h1>
-                <form action="/submit" method="POST" enctype="multipart/form-data">
-                    <label for="imageFile">Selecione a imagem do documento:</label>
-                    <input type="file" name="imageFile" id="imageFile" required>
-                    <input type="submit" value="Iniciar Transcrição">
-                </form>
+        input[type="submit"]:hover {
+            background-color: #005fa3;
+        }
+
+        /* --- ESTILOS DO PREVIEW --- */
+        .preview-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none; /* Oculto por padrão */
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 2px dashed #ccc;
+            padding: 4px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enviar Documento para Transcrição</h1>
+        <form action="/submit" method="POST" enctype="multipart/form-data">
+            <label for="imageFile">Selecione a imagem do documento:</label>
+            
+            <input type="file" name="imageFile" id="imageFile" accept="image/*" required>
+            
+            <div class="preview-container" id="previewContainer">
+                <img id="imagePreview" src="" alt="Pré-visualização da imagem">
             </div>
-        </body>
-        </html>
+
+            <input type="submit" value="Iniciar Transcrição">
+        </form>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageFile');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                // Quando o arquivo for lido, atualizar o src da imagem
+                reader.addEventListener('load', function() {
+                    imagePreview.setAttribute('src', this.result);
+                    previewContainer.style.display = 'block'; // Mostra o container
+                });
+
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.style.display = 'none'; // Esconde se cancelar a seleção
+                imagePreview.setAttribute('src', '');
+            }
+        });
+    </script>
+</body>
+</html>

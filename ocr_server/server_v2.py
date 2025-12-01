@@ -66,13 +66,9 @@ def handle_submit():
     if not endpoint:
         return "Endpoint não configurado", 500
 
-    # 2. INICIA O PROCESSO EM SEGUNDO PLANO (THREAD)
-    # Isso solta a execução imediatamente para a próxima linha
     thread = threading.Thread(target=process_image_background, args=(task_id, filepath, endpoint))
     thread.start()
 
-    # 3. REDIRECIONA IMEDIATAMENTE PARA A TELA DE ESPERA
-    # O usuário vai ver a tela de loading enquanto a thread acima trabalha
     return redirect(url_for('aguardando_page', id=task_id))
 
 @app.route('/aguardando')
